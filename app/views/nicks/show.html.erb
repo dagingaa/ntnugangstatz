@@ -1,0 +1,13 @@
+<%= render :partial => @nick %>
+
+<h2>Funsies</h2>
+<p>Random quote: <%= @nick.logs[rand(@nick.logs.size)].text %><br>
+  <% if @nick.eightball_logs %>
+  Random question: <%= @nick.eightball_logs[rand(@nick.eightball_logs.size)].query %><br>
+  Number of questions asked to gangbot: <%= @nick.eightball_logs.size %><br>
+<% end %>
+  Number of lines written: <%= @nick.logs.size %><br>
+  Number of links posted: <%= @nick.links.size %><br>
+</p>
+
+<%= link_to 'Back', nicks_path %>

@@ -1,0 +1,89 @@
+<p>Statistics for #ntnugangstaz @ EFNet was generated on <%= Time.now %>. Stats have been generated for <%= time_ago_in_words(@nicks[0].updated_at) %>, and in that period a total of <%= @nicks.size %> nicks have been active and <%= @logs.size %> lines have been written.</p>
+<div id="highscore">
+  <h2>Highscore</h2>
+  <table>
+    <th>Place</th>
+    <th>Nick</th>
+    <th>Percentage</th>
+    <th>Lines</th>
+    <th>Words</th>
+    <th>First Seen</th>
+    <th>Last Seen</th>
+    <% count = 1 %>
+    <% @sorted_nicks.each do |t| %>
+      <tr>
+    <td><%= count %></td>
+    <td><%=h t.nick %></td>
+    <td><%= sprintf("%.1f",((t.count.to_f / @total_count.to_f) * 100)) %>%</td>
+    <td><%=h t.count %></td>
+    <td>N/A</td>
+    <td><%= time_ago_in_words(t.updated_at)     <td><%= time_ago_in_words(t.updated_at) %> ago</td>
+    <td><%= time_ago_in_words(t.created_at) %> ago</td>
+%> ago</td>
+    <td><%= time_ago_in_words(t.created_at) %> ago</td>
+  </tr>
+  <% count += 1 %>
+<%end%>
+</table>
+</div>
+<% count = 0 %>
+<% second_count = 0 %>
+<div id="charts">
+  <h2>Charts</h2>
+  <% top5chart = "http://chart.apis.google.com/chart?chs=400x200&chtt=Top+5&chts=568945,20&chco=568945&chf=bg,s,00000000&chd=t:" %>
+  <% @sorted_nicks.each do |t| %>
+    <% percentage = sprintf("%.1f",((t.count.to_f / @total_count.to_f) * 100)) %>
+    <% top5chart += "#{percentage}," %>
+    <% count += percentage.to_i %>
+    <% if second_count > 3 %>
+      <% break %>
+    <%end%>
+    <% second_count += 1 %>
+  <%end%>
+  <% top5chart += "#{100 - count.to_i}&cht=p3&chl=" %>
+
+  <% @sorted_nicks.each do |t| %>
+    <% top5chart += "#{t.nick}|" %>
+  <% if second_count > 7 %>
+      <% break %>
+    <%end%>
+  <% second_count += 1 %>
+<%end%>
+  <% top5chart += "Others" %>
+
+  <%= image_tag(top5chart) %>
+</div>
+<% count = 0 %>
+<div id="general">
+  <h2>General stats</h2>
+      <table>
+        <tr>
+          <td>Number of users</td><td><%= @nicks.size %></td>
+        </tr>
+        <tr>
+          <td>Users active in the last 30 days</td><td><%#= @active_nicks.size %></td>
+        </tr>
+        <tr>
+          <td>Number of lines</td><td><%= @logs.size %></td>
+        </tr>
+        <tr>
+          <td>% of lines by top 5 nicks</td><td><% @top5.each do |t| %><% count += t.count.to_i %><%end%><%= sprintf("%.1f",((count.to_f / @total_count.to_f) * 100)) %>%</td>
+        </tr>
+      </table>
+    </div>     
+    <div id="links">
+    <h2>Last <%= @links.size %> links posted</h2>
+    <table>
+      <th>Link</th>
+      <th>Original poster</th>
+      <th>First posted</th>
+    <% @links.each do |l| %>
+      <tr>
+        <td class="maxlength"><%= link_to l.link, l.link %></td>
+        <td><%= l.nick.nick %></td>
+        <td><%= l.created_at %></td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<p>Time taken to render page <%= @time_taken %></p>

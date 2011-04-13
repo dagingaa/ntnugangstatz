@@ -1,0 +1,8 @@
+<div class="user">
+  <h2><%= link_to nick.nick, nick_path(nick) %></h2>
+  <p>
+    <% if nick.name %>
+      <b>Nick:</b> <%=h nick.name %>
+    <% end %>
+  </p>
+</div>

@@ -1,0 +1,20 @@
+<h1>Editing nick</h1>
+
+<% form_for(@nick) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nick %><br />
+    <%= f.text_field :nick %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @nick %> |
+<%= link_to 'Back', nicks_path %>

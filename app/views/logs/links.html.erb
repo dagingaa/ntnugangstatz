@@ -1,0 +1,8 @@
+<p>
+Here you go, master. <%= @links.count %> links that met your criteria.
+</p>
+<ul>
+<% @links.each do |l| %>
+<li><%= link_to l.link, l.link %></li>
+<% end %>
+</ul>
