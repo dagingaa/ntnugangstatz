@@ -1,0 +1,156 @@
+<!-- CHARTS -->
+<h2>Charts</h2>
+<div id="charts">
+  <script type="text/javascript"> 
+
+    var chart;
+    $(document).ready(function() {
+        chart = new Highcharts.Chart({
+          chart: {
+            renderTo: 'cake',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+          },
+          title: {
+            text: 'Top 5 all time'
+          },
+          tooltip: {
+            formatter: function() {
+              return '<b>'+ this.point.name +'</b>: '+ this.y +' %';
+            }
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: false
+              },
+              showInLegend: true
+            }
+          },
+          series: [{
+            type: 'pie',
+            name: 'User share',
+            data: [
+              <% count = 1 %>
+              <% total_percentage = 0 %>
+              <% @sorted_g_logs.each do |t| %>
+                ['<%= t.nick.nick %>',<%= percentage = sprintf("%.1f",((t.count.to_f / @total_count.to_f) * 100)) %>], 
+                <% total_percentage += percentage.to_f %>
+                <% break if count > 4 %>
+                <% count += 1 %>
+              <% end %>
+              ['Others',   <%= 100.0 - total_percentage %>]
+            ]
+          }]
+        });
+      });
+</script>                                         
+<!-- top 5 last month -->
+  <script type="text/javascript"> 
+
+    var chart;
+    $(document).ready(function() {
+        chart = new Highcharts.Chart({
+          chart: {
+            renderTo: 'cake_month',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+          },
+          title: {
+            text: 'Top 5 last 30 days'
+          },
+          tooltip: {
+            formatter: function() {
+              return '<b>'+ this.point.name +'</b>: '+ this.y +' %';
+            }
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: false
+              },
+              showInLegend: true
+            }
+          },
+          series: [{
+            type: 'pie',
+            name: 'User share',
+            data: [
+              <% count = 1 %>
+              <% total_percentage = 0 %>
+              <% @sorted_g_logs.where("created_at > '#{30.days.ago}'").each do |t| %>
+                ['<%= t.nick.nick %>',<%= percentage = sprintf("%.1f",((t.count.to_f / Log.where("created_at > '#{30.days.ago}'").count.to_f) * 100)) %>], 
+                <% total_percentage += percentage.to_f %>
+                <% break if count > 4 %>
+                <% count += 1 %>
+              <% end %>
+              ['Others',   <%= 100.0 - total_percentage %>]
+            ]
+          }]
+        });
+      });
+</script>                                         
+
+
+<!-- number of lines per month -->
+<% log_months = Log.hash_by_month %>
+<script type="text/javascript">
+  var chart;
+  $(document).ready(function() {
+    chart = new Highcharts.Chart({
+      chart: {
+        renderTo: 'plot',
+        defailtSeriesType: 'line',
+        //marginRight: 130,
+        marginBottom: 25
+      },
+      title: {
+        text: '# lines per month',
+        x: -20
+      },
+      xAxis: {
+        <% count = 0 %>
+        categories: [
+        <% log_months.each do |k,v| %>
+          <% count += 1 %>
+          <%= count < log_months.size ? "'#{k}', ":"'#{k}'" %>
+          <% break unless count < log_months.size-1 %>
+        <% end %>
+        ]
+      },
+      yAxis: {
+        title: {
+          text: '# lines'
+        },
+        plotLines: [{
+          value: 0,
+          width: 1,
+          color: '#808080'
+        }]
+      },
+      series: [{
+        name: 'ntnugangstaz',
+        <% count = 0 %>
+        data: [
+        <% log_months.each do |k,v| %>
+          <% count += 1 %>
+          <%= count < log_months.size ? "#{v}, ":"'#{v}'" %>
+          <% break unless count < log_months.size-1 %>
+        <% end %>
+        ]
+      }]
+    });
+  });
+</script>
+
+<!-- chart divs -->
+<div id="cake" style="width: 80%; height: 400px;"></div>
+<div id="cake_month" style="width: 80%; height: 400px;"></div>
+<div id="plot" style="width: 80%; height: 400px;"></div>
+</div>

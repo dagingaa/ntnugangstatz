@@ -8,34 +8,25 @@
     <%= javascript_include_tag 'highcharts/highcharts' %>
     <%= javascript_include_tag 'highcharts/themes/gray' %>
     <%= stylesheet_link_tag 'stylesheet' %>
-<!-- CSS3 :D -->
-<style>
-<style> 
-      .snurr {
-        -webkit-transitions: 1s;
-        -o-transitions: 1s;
-	-moz-transition-duration: 1s;
-        float: left;
-      }
-      .snurr:hover { 
-        o-transition: 20s;
-        -webkit-transition: 20s;
-	-moz-transition-duration: 20s;
-	-moz-transform: rotate(360deg);
-        -webkit-transform: rotate(36000deg);
-      }
-</style>
   </head>
-	  <body>
+  <body>
     <div id="container">
       <header>
       <img src="/images/gangstatz.png" class="snurr">
-        </header>
+      <ul id="nav">
+        <li><%= link_to :home, root_path %></li>
+        <li><%= link_to :charts, charts_path %></li>
+      </ul>
+      </header>
+
       <div id="content">
+        <p>Statistics for #ntnugangstaz @ EFNet was generated on <%= Time.now %>. Stats have been generated for <%= time_ago_in_words(Log.first.created_at) %>, and in that period a total of <%= Nick.count %> nicks have been active and <%= Log.count %> lines have been written.</p>
         <%= yield %>
       </div>  
+
       <footer>
       <p>Gangstatz was created by dagingaa and larsivsi in May 2010. It is currently under development, and any information on this page is prone to error because of it. Logging is done by gangbot written by larsivsi, and presentation made possible by Ruby on Rails written by dagingaa. Yes, that's right haters, I coded Rails all by my self. So STFU.</p>
+      <p>Time taken to render page <%= Time.now - @time_taken %></p>
       </footer>
     </div>
   </body>
