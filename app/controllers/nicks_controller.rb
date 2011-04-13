@@ -2,11 +2,10 @@ class NicksController < ApplicationController
   # GET /nicks
   # GET /nicks.xml
   def index
-    @nicks = Nick.find(:all)
+    @nicks = Nick.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @nicks }
     end
   end
 
@@ -17,7 +16,6 @@ class NicksController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @nick }
     end
   end
 end

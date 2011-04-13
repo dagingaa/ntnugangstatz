@@ -23,6 +23,7 @@ class LogsController < ApplicationController
 
 	end
   end
+
   def show
     @logs = Log.find(:all, :order => "id DESC", :limit => 10000)
   end
